@@ -1,207 +1,127 @@
-" based on http://github.com/jferris/config_files/blob/master/vimrc
-
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
+" 设置启动位置及窗口大小
+" winpos 200 102
+set lines=40 columns=140
+" 选择高亮方案
+colorscheme fruidle
+"语法样式开启
+syntax on
 set nocompatible
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-set nobackup
-set nowritebackup
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" This is an alternative that also works in block mode, but the deleted
-" text is lost and it only works for putting the current register.
-"vnoremap p "_dp
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-  syntax on
-  set hlsearch
-endif
-
-" Switch wrap off for everything
-set nowrap
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Set File type to 'text' for files ending in .txt
-  autocmd BufNewFile,BufRead *.txt setfiletype text
-
-  " Enable soft-wrapping for text files
-  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  " Automatically load .vimrc source when saved
-  autocmd BufWritePost .vimrc source $MYVIMRC
-
-  augroup END
-
-else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
-
-" if has("folding")
-  " set foldenable
-  " set foldmethod=syntax
-  " set foldlevel=1
-  " set foldnestmax=2
-  " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
-" endif
-
-" Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
+filetype plugin indent on
+"设置字体大小
+set guifont=Monaco:h18
+" set guifont=Monaco\ 14
+"设置缩进
+set sw=2
+set ts=2
+set softtabstop=2
 set expandtab
-
-" Always display the status line
-set laststatus=2
-
-" \ is the leader character
-let mapleader = ","
-
-" Edit the README_FOR_APP (makes :R commands work)
-map <Leader>R :e doc/README_FOR_APP<CR>
-
-" Leader shortcuts for Rails commands
-map <Leader>m :Rmodel 
-map <Leader>c :Rcontroller 
-map <Leader>v :Rview 
-map <Leader>u :Runittest 
-map <Leader>f :Rfunctionaltest 
-map <Leader>tm :RTmodel 
-map <Leader>tc :RTcontroller 
-map <Leader>tv :RTview 
-map <Leader>tu :RTunittest 
-map <Leader>tf :RTfunctionaltest 
-map <Leader>sm :RSmodel 
-map <Leader>sc :RScontroller 
-map <Leader>sv :RSview 
-map <Leader>su :RSunittest 
-map <Leader>sf :RSfunctionaltest 
-
-" Hide search highlighting
-map <Leader>h :set invhls <CR>
-
-" Opens an edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>e
-map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
-" Opens a tab edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>t
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-" Inserts the path of the currently edited file into a command
-" Command mode: Ctrl+P
-cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-
-" Duplicate a selection
-" Visual mode: D
-vmap D y'>p
-
-" Press Shift+P while in visual mode to replace the selection without
-" overwriting the default register
-vmap P p :call setreg('"', getreg('0')) <CR>
-
-" For Haml
-au! BufRead,BufNewFile *.haml         setfiletype haml
-
-" No Help, please
-nmap <F1> <Esc>
-
-" Press ^F from insert mode to insert the current file name
-imap <C-F> <C-R>=expand("%")<CR>
-
-" Maps autocomplete to tab
-imap <Tab> <C-N>
-
-imap <C-L> <Space>=><Space>
-
-" Display extra whitespace
-" set list listchars=tab:»·,trail:·
-
-" Edit routes
-command! Rroutes :e config/routes.rb
-command! Rschema :e db/schema.rb
-
-" Local config
-if filereadable(".vimrc.local")
-  source .vimrc.local
-endif
-
-" Use Ack instead of Grep when available
-if executable("ack")
-  set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
-endif
-
-" Color scheme
-" colorscheme vividchalk
-" highlight NonText guibg=#060606
-" highlight Folded  guibg=#0A0A0A guifg=#9090D0
-
-" Numbers
+"显示行号（否：nonumber）
 set number
-set numberwidth=5
+"显示光标的坐标
+set ruler
+"不自动换行(否：wrap)
+set nowrap
+"在输入括号时光标会短暂地跳到与之相匹配的括号处，不影响输入
+set showmatch
+" 匹配括号高亮的时间（单位是十分之一秒）
+set matchtime=1
+" 搜索高亮
+set hlsearch
+"设置编码
+set enc=utf-8
+"设置文件编码
+set fenc=utf-8
+"设置文件编码检测类型及支持格式
+set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+"开启命令显示
+set showcmd
+" 当文件发生变化时，自动读取最新的内容
+set autoread
 
-" Snippets are activated by Shift+Tab
-let g:snippetsEmu_key = "<S-Tab>"
+"隐藏菜单栏
+set guioptions-=m
+"隐藏工具栏
+set guioptions-=T
 
-" Tab completion options
-" (only complete to the longest unambiguous match, and show a menu)
-set completeopt=longest,menu
-set wildmode=list:longest,list:full
-set complete=.,t
+" 设置窗口标题，主要是最后一个方法的使用，显示当前buffer所在目录，其实就是项目目录
+set titlestring=%(\ %M%)\ %{expand(\"%:f\")}%(\ %a%)\ -\ %{getcwd()}
 
-" case only matters with mixed case expressions
-set ignorecase
-set smartcase
-
-" Tags
-let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
-set tags=./tags;
-
-let g:fuf_splitPathMatching=1
-
-" Open URL
-command -bar -nargs=1 OpenURL :!open <args>
-function! OpenURL()
-  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
-  echo s:uri
-  if s:uri != ""
-	  exec "!open \"" . s:uri . "\""
-  else
-	  echo "No URI found in line."
-  endif
+"设置F2呼出菜单栏
+function! ToggleMenuBar()
+	echo "ToggleMenuBar"
+	if &guioptions =~# 'm'
+		set guioptions-=m
+	else
+		set guioptions+=m
+	endif
 endfunction
-map <Leader>w :call OpenURL()<CR>
+imap <silent> <C-F12> <C-O>:call ToggleMenuBar()<CR>
+map <silent> <C-F12> :call ToggleMenuBar()<CR>
 
+"括号补全
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {}<ESC>i
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap < <><ESC>i
+:inoremap > <c-r>=ClosePair('>')<CR>
+
+inoremap ' ''<esc>:let leavechar="'"<cr>i
+inoremap " ""<esc>:let leavechar='"'<cr>i
+
+function ClosePair(char)
+  if getline('.')[col('.') - 1] == a:char
+    return "\<Right>"
+  else
+    return a:char
+  endif
+endf
+
+" NERDTree插件的快捷键
+imap <silent> <F7> <esc>:NERDTreeToggle<CR>
+nmap <silent> <F7> :NERDTreeToggle<CR>
+" BufExplorer 快捷键
+imap <silent> <F2> <esc>:BufExplorer<CR>
+nmap <silent> <F2> :BufExplorer<CR>
+
+" ctrl + s
+imap <C-s> <esc>:w<CR>:echo expand("%f") . " saved."<CR>
+vmap <C-s> <esc>:w<CR>:echo expand("%f") . " saved."<CR>
+nmap <C-s> :w<CR>:echo expand("%f") . " saved."<CR>
+imap <C-s> <esc>:w<CR>:echo expand("%f") . " saved."<CR>
+
+" 切换标签
+map <D-1> :tabn 1<CR>
+map <D-2> :tabn 2<CR>
+map <D-3> :tabn 3<CR>
+map <D-4> :tabn 4<CR>
+map <D-5> :tabn 5<CR>
+map <D-6> :tabn 6<CR>
+map <D-7> :tabn 7<CR>
+map <D-8> :tabn 8<CR>
+map <D-9> :tabn 9<CR>
+
+map! <D-1> <C-O>:tabn 1<CR>
+map! <D-2> <C-O>:tabn 2<CR>
+map! <D-3> <C-O>:tabn 3<CR>
+map! <D-4> <C-O>:tabn 4<CR>
+map! <D-5> <C-O>:tabn 5<CR>
+map! <D-6> <C-O>:tabn 6<CR>
+map! <D-7> <C-O>:tabn 7<CR>
+map! <D-8> <C-O>:tabn 8<CR>
+map! <D-9> <C-O>:tabn 9<CR>
+
+" 当修改snippet脚本后，执行,rr可重新加载脚本，无需重启Vim
+function! ReloadSnippets( snippets_dir, ft )
+  if strlen( a:ft ) == 0
+    let filetype = "_"
+  else
+    let filetype = a:ft
+  endif
+
+  call ResetSnippets()
+  call GetSnippets( a:snippets_dir, filetype )
+endfunction
+nmap ,rr :call ReloadSnippets(snippets_dir, &filetype)<CR>
