@@ -1,0 +1,39 @@
+#!/bin/bash
+if [ $# -eq 0 ]; then
+  echo 'Usage: del file ...'
+  exit
+fi
+if [ $1 = '.' -o $1 = '..' ]; then
+  echo "Can't delete $1"
+  exit
+fi
+for src_file in $@; do
+  dst_dir="$HOME/.trashbin"
+  src_filename=$(basename $src_file)
+  dst_file="$dst_dir/$src_filename"
+  log_file="$dst_dir/.log"
+  #检查源文件是否存在
+  if [ ! -e $src_file ]; then
+    echo "\"$src_file\" dosen't exit"
+    exit
+  fi
+  #创建目标文件夹
+  if [ ! -e $dst_dir ]; then
+    mkdir $dst_dir
+  fi
+  #选择合适的目标文件名
+  new_file=$dst_file
+  i=0
+  while true; do
+    if [ ! -e $new_file ]; then
+      break
+    fi
+    new_file="$dst_file.$((++i))"
+  done
+  dst_file=$new_file
+  #执行删除操作
+  mv $src_file $dst_file
+  #输出信息并写入日志文件
+  echo "$src_file -> $dst_file"
+#  echo "[$(date +'%m-%d %H:%M')] $src_file -> $dst_file" >> $log_file
+done
