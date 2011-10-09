@@ -37,3 +37,6 @@ done
 
 export PS1='\n[0;36m┌${LINE}[${COL}D─────────[36m[\t][0;36m─────[34m[\W][0;36m─────$(parse_git_branch)───$(parse_git_remote_status)
 └──> \$ \[\e[00m\]'
+
+# set iTerm title to current dir
+export PROMPT_COMMAND='echo -en "\033]0;${PWD}\007"'
