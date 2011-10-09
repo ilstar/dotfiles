@@ -35,5 +35,5 @@ do
 	LINE="${LINE}─"
 done
 
-export PS1='\n[0;36m┌${LINE}[${COL}D────[0;33m[`rvm current`][0;36m─────[36m[\t][0;36m─────[34m[\W][0;36m─────$(parse_git_branch)───$(parse_git_remote_status)
+export PS1='\n[0;36m┌${LINE}[${COL}D─────────[36m[\t][0;36m─────[34m[\W][0;36m─────$(parse_git_branch)───$(parse_git_remote_status)
 └──> \$ \[\e[00m\]'
