@@ -11,7 +11,7 @@ parse_git_branch() {
 	  else
 			CLR='1'
 	  fi
-		RSLT="[3${CLR};40m[${GIT_BRANCH}][0;36m"
+		RSLT="[3${CLR}m[${GIT_BRANCH}][0;36m"
 	fi
 	echo $RSLT
 }
@@ -21,7 +21,7 @@ parse_git_remote_status() {
   GIT_REMOTE_STATUS=`git status 2>/dev/null | grep 'Your branch is ahead of'`
   if [ "$GIT_REMOTE_STATUS" ]
   then
-    RSLT="[31;40mr[0;36m"
+    RSLT="[31mr[0;36m"
   fi
   echo $RSLT
 }
