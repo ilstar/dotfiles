@@ -5,6 +5,6 @@ source ~/.bash/config
 source ~/.bash/prompt
 source ~/.bash/rvm
 
-if [ -f ~/.bashrc ]; then
-  source ~/.bashrc
+if [ -f ~/.localrc ]; then
+  source ~/.localrc
 fi
