@@ -38,6 +38,9 @@ set showcmd
 " 当文件发生变化时，自动读取最新的内容
 set autoread
 
+" 设置.ejs后缀名的文件按照html文件类型语法高亮
+autocmd BufRead,BufNewFile *.ejs set filetype=html
+
 "隐藏菜单栏
 set guioptions-=m
 "隐藏工具栏
