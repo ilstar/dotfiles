@@ -1,0 +1,90 @@
+#! /usr/local/bin/node
+(function() {
+  var copyToClipboard, crypto, getCode, getFlowerPassword, getPassword, hmacDigest, tty;
+
+  tty = require('tty');
+
+  crypto = require('crypto');
+
+  getPassword = function(callback) {
+    var password;
+    password = '';
+    process.stdout.write("password:");
+    tty.setRawMode(true);
+    process.stdin.setEncoding('utf8');
+    return process.stdin.on('keypress', function(c, key) {
+      if ((key != null) && key.ctrl && 'c' === key.name) process.exit();
+      if ((key != null) && 'enter' === key.name) {
+        tty.setRawMode(false);
+        process.stdin.removeAllListeners('keypress');
+        process.stdout.write("\n");
+        return callback.call(null, password);
+      } else {
+        password += c;
+        return process.stdout.write('*');
+      }
+    }).resume();
+  };
+
+  getCode = function(callback) {
+    var code;
+    code = '';
+    process.stdout.write("code:");
+    process.stdin.setEncoding('utf8');
+    return process.stdin.on('data', function(input) {
+      process.stdin.removeAllListeners('data');
+      return callback.call(null, input.trim());
+    }).resume();
+  };
+
+  hmacDigest = function(string, key) {
+    var hmac;
+    hmac = crypto.createHmac('md5', key);
+    hmac.update(string);
+    return hmac.digest('hex');
+  };
+
+  getFlowerPassword = function(password, key) {
+    var code1, code16, code32, i, md5one, md5three, md5two, rule, source, str;
+    md5one = hmacDigest(password, key);
+    md5two = hmacDigest(md5one, 'snow');
+    md5three = hmacDigest(md5one, 'kise');
+    rule = md5three.split('');
+    source = md5two.split('');
+    for (i = 1; i <= 31; i++) {
+      if (isNaN(source[i])) {
+        str = "sunlovesnow1990090127xykab";
+        if (str.search(rule[i]) > -1) source[i] = source[i].toUpperCase();
+      }
+    }
+    code32 = source.join('');
+    code1 = code32.slice(0, 1);
+    if (isNaN(code1)) {
+      code16 = code32.slice(0, 16);
+    } else {
+      code16 = "K" + code32.slice(1, 16);
+    }
+    return code16;
+  };
+
+  copyToClipboard = function(str) {
+    var exec;
+    exec = require('child_process').exec;
+    return exec("echo '" + str + "' | pbcopy", function(error, stdout, stderr) {
+      if (!(error != null)) {
+        return console.log("Your password was copy into clipboard.");
+      }
+    });
+  };
+
+  getPassword(function(password) {
+    return getCode(function(code) {
+      var final;
+      final = getFlowerPassword(password, code);
+      copyToClipboard(final);
+      console.log("flower plassword: " + final);
+      return process.stdin.destroy();
+    });
+  });
+
+}).call(this);
