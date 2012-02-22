@@ -10,6 +10,7 @@
     var password;
     password = '';
     process.stdout.write("password:");
+    process.stdin;
     tty.setRawMode(true);
     process.stdin.setEncoding('utf8');
     return process.stdin.on('keypress', function(c, key) {
