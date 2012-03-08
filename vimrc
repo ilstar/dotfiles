@@ -40,6 +40,7 @@ set autoread
 
 " 设置.ejs后缀名的文件按照html文件类型语法高亮
 autocmd BufRead,BufNewFile *.ejs set filetype=html
+autocmd BufRead,BufNewFile *.less set filetype=css
 
 "隐藏菜单栏
 set guioptions-=m
