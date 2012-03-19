@@ -1,6 +1,6 @@
 " 设置启动位置及窗口大小
 " winpos 200 102
-set lines=40 columns=140
+" set lines=40 columns=140
 " 选择高亮方案
 colorscheme railscasts
 "语法样式开启
