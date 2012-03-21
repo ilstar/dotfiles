@@ -1,0 +1,35 @@
+snippet -
+	->
+		${1}
+snippet df
+	${1:function_name} = ->
+		${2}
+snippet dfa
+	${1:function_name} = (${2}) ->
+		${3}
+snippet dcf
+	${1:function_name}: ->
+		${2}
+snippet dcfa
+	${1:function_name}: (${2:arg}) ->
+		${3}
+snippet for
+	for ${1} in ${2}
+		${3}
+snippet log
+	console.log ${1}
+snippet try
+	try
+		${1}
+	catch error
+		console.log error
+########################## for test ########################## 
+snippet before
+	beforeEach ->
+		${1}
+snippet des
+	describe "${1}", ->
+		${2}
+snippet it
+	it "${1}", ->
+		${2}
