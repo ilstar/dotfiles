@@ -2,13 +2,13 @@ snippet h
 	<?php
 		${1}
 	?>
-snippet t
-	<${1:span}>${2}</$1>
-snippet p
-	<${1:div}>
-		${2}
-	</$1>
 snippet =
 	<?= ${1} ?>
 snippet .
 	->
+snippet try
+	try {
+		${1}
+	} catch (${2:Exception} $e) {
+		${3}
+	}
