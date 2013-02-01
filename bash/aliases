@@ -8,3 +8,12 @@ alias reload='. ~/.bash_profile'
 
 alias ls="ls -G"
 alias ll="ls -l"
+
+# get last command's args
+# actually it's only for 'git diff something', it's personal workflow.
+function getLastArgs() {
+  history | tail -n2 | head -n1 | awk '{for (i=1;i<=NF;i++) if (i>3) printf("%s ", $i)}'
+}
+
+alias colast="getLastArgs | xargs git co --"
+alias addlast="getLastArgs | xargs git add"
