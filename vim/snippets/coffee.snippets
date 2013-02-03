@@ -1,6 +1,9 @@
 snippet -
 	->
 		${1}
+snippet -a
+	(${1}) ->
+		${2}
 snippet df
 	${1:function_name} = ->
 		${2}
@@ -13,6 +16,9 @@ snippet dcf
 snippet dcfa
 	${1:function_name}: (${2:arg}) ->
 		${3}
+snippet r
+	${1:action_name} = (req, res) ->
+		${2}
 snippet for
 	for ${1} in ${2}
 		${3}
