@@ -15,5 +15,10 @@ function getLastArgs() {
   history | tail -n2 | head -n1 | awk '{for (i=1;i<=NF;i++) if (i>3) printf("%s ", $i)}'
 }
 
-alias colast="getLastArgs | xargs git co --"
-alias addlast="getLastArgs | xargs git add"
+function copyLastCommit() {
+  git log -1 | head -1 | awk '{print "https://git.gree-dev.net/giistudio/gree-server/commit/" substr($2, 1, 6)}' | pbcopy
+}
+
+alias git-reset-last="getLastArgs | xargs git co --"
+alias git-add-last="getLastArgs | xargs git add"
+alias git-copy-last="copyLastCommit"
