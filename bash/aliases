@@ -22,3 +22,5 @@ function copyLastCommit() {
 alias git-reset-last="getLastArgs | xargs git co --"
 alias git-add-last="getLastArgs | xargs git add"
 alias git-copy-last="copyLastCommit"
+
+alias shadowsocks_start="nohup node ~/repositories/shadowsocks-nodejs/local.js > /tmp/nohup.log"
